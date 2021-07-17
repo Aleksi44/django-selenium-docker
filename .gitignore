@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.idea
+build/
+static/
+media/
+db.sqlite3
+db.sqlite3*
+.coverage
+.coverage.*
+*.mo
+.env

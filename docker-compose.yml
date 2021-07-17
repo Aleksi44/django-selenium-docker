@@ -1,0 +1,71 @@
+version: "3.3"
+
+services:
+  app_rabbitmq:
+    container_name: app_rabbitmq
+    hostname: rabbitmq
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+    networks:
+      - app_network
+    restart: on-failure
+    environment:
+      - RABBITMQ_DEFAULT_USER=app_user
+      - RABBITMQ_DEFAULT_PASS=changeme
+  app_redis:
+    container_name: app_redis
+    networks:
+      - app_network
+    image: redis:latest
+    command: redis-server --requirepass changeme
+    ports:
+      - "6379:6379"
+    restart: on-failure
+  app_db:
+    container_name: app_db
+    image: postgres:13.1
+    environment:
+      - POSTGRES_USER=app_user
+      - POSTGRES_PASSWORD=changeme
+      - POSTGRES_DB=app_db
+    volumes:
+      - app_db:/var/lib/postgresql/13.1/main
+    ports:
+      - "5432:5432"
+    networks:
+      - app_network
+    restart: on-failure
+  app_worker_core:
+    command: sh -c "celery -A app.core worker -l info"
+    container_name: app_worker_core
+    depends_on:
+      - app
+      - app_db
+      - app_rabbitmq
+      - app_redis
+    hostname: app_worker_core
+    image: app
+    networks:
+      - app_network
+    restart: on-failure
+  app:
+    container_name: app
+    build: ./
+    depends_on:
+      - app_db
+      - app_rabbitmq
+      - app_redis
+    ports:
+      - "8001:8000"
+    image: app
+    networks:
+      - app_network
+    restart: on-failure
+
+
+networks:
+  app_network:
+
+volumes:
+  app_db:

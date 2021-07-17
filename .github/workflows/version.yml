@@ -1,0 +1,13 @@
+name: deploy
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Test Build Stack
+        run: docker-compose up -d
+      - name: Test OnStart
+        run: docker-compose exec -T app python manage.py on_start --settings=settings.production
+      - name: Test Django
+        run: docker-compose exec -T app python manage.py test --settings=settings.production

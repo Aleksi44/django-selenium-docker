@@ -1,0 +1,13 @@
+Django==3.2.4
+ipython==7.16.1
+coverage==5.3.1
+psycopg2-binary==2.8.6
+sentry-sdk==1.1.0
+celery==5.0.5
+selenium==3.141.0
+django-celery-results==2.0.1
+model-bakery==1.2.1
+gevent==21.1.2
+requests==2.25.1
+channels==3.0.3
+channels-redis==3.2.0
