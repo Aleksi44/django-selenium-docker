@@ -1,4 +1,4 @@
-# Selenium Docker
+# Django Selenium Docker
 
 Here is a webapp that displays the Selenium window preview in a Django Admin.
 
