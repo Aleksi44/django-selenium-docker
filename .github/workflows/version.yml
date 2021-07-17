@@ -1,4 +1,5 @@
 name: deploy
+on: push
 jobs:
   version:
     runs-on: ubuntu-latest
